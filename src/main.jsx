@@ -7,13 +7,18 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './Mainlayout/Home';
+import LogIn from './Mainlayout/Lopgin';
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home></Home>,
+    element:<LogIn></LogIn> ,
   },
+  {
+    path:'/home',
+    element: <Home></Home>,
+  }
 ]);
 
 
