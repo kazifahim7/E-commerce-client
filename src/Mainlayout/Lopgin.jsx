@@ -17,7 +17,7 @@ const LogIn = () => {
                             <p className="mt-2 text-base text-gray-600">
                                 Don’t have an account?{" "}
                                 <Link
-                                 to={'/singUp'}
+                                    to={'/signUp'}
                                     
                                     title=""
                                     className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
