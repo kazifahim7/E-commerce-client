@@ -13,15 +13,51 @@ const Top = () => {
     const [sort,setSort]=useState('')
     console.log(sort)
 
+    const [currentPage, setCurrentPage] = useState(0)
+    const itemPerPage = 8
 
-    const {data=[],isLoading}=useQuery({
-        queryKey : ['product',category,search,sort],
-        queryFn : async ()=>{
-            const items = await axios.get(`http://localhost:5000/allProduct?category=${category}&search=${search}&sort=${sort}`)
+
+    const { data = [], isLoading } = useQuery({
+        queryKey: ['product', category, search, sort,currentPage, itemPerPage],
+        queryFn: async () => {
+            const items = await axios.get(`http://localhost:5000/allProduct?category=${category}&search=${search}&sort=${sort}&page=${currentPage}&size=${itemPerPage}`)
             return items.data;
         }
 
     })
+
+    
+
+    console.log(data.length)
+    
+    const numberOfPage = Math.ceil(40 / itemPerPage);
+
+    
+
+
+
+
+
+
+    const pages = [...Array(numberOfPage).keys()]
+
+    console.log(pages)
+
+
+    const handlePrev = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+
+    const handleNext = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
+
+
+
 
 
     const handleClick=()=>{
@@ -84,6 +120,9 @@ const Top = () => {
                 {
                     isLoading && <div className="flex justify-center items-center mt-10"><h1 className="loading loading-spinner loading-lg"></h1></div>
                 }
+                {
+                    data.length<1 && <div className="text-center animate-pulse font-extrabold text-2xl">No data..........</div>
+                }
                 <div className="mt-14 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
 
@@ -108,10 +147,20 @@ const Top = () => {
                         </div>)
                     }
 
+                  
+
 
 
 
                 
+                </div>
+                <div className="flex justify-center  py-10 space-x-2">
+                    <button onClick={handlePrev} className="btn bg-[#41b8e0]">Prev</button>
+
+                    {
+                        pages.map(page => <button onClick={() => setCurrentPage(page)} key={page} className={`btn bg-[#41b8e0] text-black ${currentPage === page && 'bg-orange-400'} `}>{page}</button>)
+                    }
+                    <button onClick={handleNext} className="btn bg-[#41b8e0] text-black">Next</button>
                 </div>
             </div>
 
