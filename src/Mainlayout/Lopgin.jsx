@@ -45,8 +45,7 @@ const LogIn = () => {
 
     }
 
-    const gooleLog = () => {
-        
+    const gooleLog = () => {   
         googleLogIN()
             .then(data => {
                 if (data.user) {
