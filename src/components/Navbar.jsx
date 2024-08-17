@@ -1,7 +1,26 @@
+import { useContext } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
+    const { logOut }=useContext(AuthContext)
+
+    const navigate=useNavigate()
+
+    const singOut=()=>{
+        logOut()
+        .then(()=>{
+            
+            
+            toast.success("logOut success")})
+
+            navigate("/")
+            .catch(error=>toast.error(`${error.message}`))
+
+    }
     return (
         <div>
             <div className="navbar bg-[#ffffff] text-black px-5">
@@ -35,7 +54,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                    
-                    <button className="btn bg-[#FF7004] text-white border-none">LogOut<FaArrowRight /></button>
+                    <button onClick={singOut} className="btn bg-[#FF7004] text-white border-none">LogOut<FaArrowRight /></button>
                 </div>
             </div>
         </div>

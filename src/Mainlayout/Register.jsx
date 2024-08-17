@@ -1,6 +1,77 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
+
+    const { signUp, googleLogIN,loading }=useContext(AuthContext)
+    const navigate=useNavigate()
+    const location =useLocation()
+    
+
+
+    const handleSubmit=(e)=>{
+        e.preventDefault()
+
+        const name=e.target.name.value;
+        const email=e.target.email.value;
+        const password=e.target.password.value;
+
+        
+
+        signUp(email,password)
+        .then(data=>{
+            if(data.user){
+                
+                toast.success('Successfully logIn')
+                navigate(location.state?location.state: '/home')
+                e.target.reset()
+
+
+
+
+            }
+        })
+            .catch((error) => toast.error(`${error.message}`))
+
+
+
+
+
+
+
+
+    }
+
+    const gooleLog=()=>{
+        
+        googleLogIN()
+        .then(data=>{
+            if (data.user) {
+                
+                toast.success('Successfully logIn')
+                navigate(location.state ? location.state : '/home')
+                
+
+
+
+
+            }
+
+        })
+            .catch((error) => {
+               
+                
+                
+                toast.error(`${error.message}`)})
+
+    }
+
+
+
+
+
     return (
         <div>
             <section className="relative py-10 bg-gray-900 sm:py-16 lg:py-24">
@@ -30,7 +101,7 @@ const Register = () => {
                                 </p>
                             </div>
 
-                            <form  method="POST" className="mt-8">
+                            <form  onSubmit={handleSubmit} method="POST" className="mt-8">
                                 <div className="space-y-5">
                                     <div>
                                         <label className="text-base font-medium text-gray-900">
@@ -77,14 +148,20 @@ const Register = () => {
                                     <div>
                                         <button
                                             type="submit"
-                                            className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                                            className={` ${loading&&"animate-pulse"} inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700`}
                                         >
-                                            Sign up
+                                            {
+                                                loading ? "loading....." : "Sign up"
+                                            }
+                                            
                                         </button>
+                                        <Toaster></Toaster>
                                     </div>
 
                                     <div>
                                         <button
+
+                                        onClick={gooleLog}
                                             type="button"
                                             className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
                                         >
@@ -102,6 +179,7 @@ const Register = () => {
                                             </div>
                                             Sign up with Google
                                         </button>
+                                        <Toaster></Toaster>
                                     </div>
                                 </div>
                             </form>

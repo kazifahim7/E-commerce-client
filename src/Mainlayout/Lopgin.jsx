@@ -1,7 +1,87 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const LogIn = () => {
+
+    const { googleLogIN, LogIn,loading }=useContext(AuthContext)
+
+    const navigate = useNavigate()
+    const location=useLocation()
+    
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+
+        
+
+        LogIn(email, password)
+            .then(data => {
+                if (data.user) {
+                    
+                    toast.success('Successfully logIn')
+                    navigate(location.state?location.state : '/home')
+                    e.target.reset()
+
+
+
+
+                }
+            })
+            .catch((error) => toast.error(`${error.message}`))
+
+
+
+
+
+
+
+
+    }
+
+    const gooleLog = () => {
+        
+        googleLogIN()
+            .then(data => {
+                if (data.user) {
+                   
+                    navigate(location.state ? location.state : '/home')
+                    toast.success('Successfully logIn')
+                    navigate('/home')
+
+
+
+
+
+                }
+
+            })
+            .catch((error) => {
+               
+
+
+                toast.error(`${error.message}`)
+            })
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div>
             <section className="bg-white">
@@ -26,7 +106,7 @@ const LogIn = () => {
                                 </Link>
                             </p>
 
-                            <form action="#" method="POST" className="mt-8">
+                            <form onSubmit={handleSubmit} method="POST" className="mt-8">
                                 <div className="space-y-5">
                                     <div>
                                         <label className="text-base font-medium text-gray-900">
@@ -63,16 +143,21 @@ const LogIn = () => {
                                     <div>
                                         <button
                                             type="submit"
-                                            className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-[#FF7004] border border-transparent rounded-md focus:outline-none hover:bg-[#FF7004] focus:bg-blue-700"
+                                            className={` ${loading && "animate-pulse"} inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-[#FF7004] border border-transparent rounded-md focus:outline-none hover:bg-[#FF7004]focus:bg-blue-700`}
                                         >
-                                            Log in
+                                            {
+                                                loading ? "loading....." : "sign In"
+                                            }
+
                                         </button>
+                                        <Toaster></Toaster>
                                     </div>
                                 </div>
                             </form>
 
                             <div className="mt-3 space-y-3">
                                 <button
+                                onClick={gooleLog}
                                     type="button"
                                     className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
                                 >
