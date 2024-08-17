@@ -20,7 +20,7 @@ const Top = () => {
     const { data = [], isLoading } = useQuery({
         queryKey: ['product', category, search, sort,currentPage, itemPerPage],
         queryFn: async () => {
-            const items = await axios.get(`http://localhost:5000/allProduct?category=${category}&search=${search}&sort=${sort}&page=${currentPage}&size=${itemPerPage}`)
+            const items = await axios.get(`https://ecommarce-server-three.vercel.app/allProduct?category=${category}&search=${search}&sort=${sort}&page=${currentPage}&size=${itemPerPage}`)
             return items.data;
         }
 
@@ -139,8 +139,19 @@ const Top = () => {
                                     {item.product_name}
                                     
                                 </h2>
+                                <p><span className="font-bold">Description</span>: A flexible modern seating solution designed to adapt to the user's body and movement, providing enhanced comfort and support.</p>
                                 <p>category : {item.category}</p>
                                 <p>price : {item.price}$</p>
+                               <div className="flex items-center gap-3">
+                                    <p>Rating:</p>
+                                    <div className="rating ">
+                                        <input type="radio" name="rating-1" className="mask bg-yellow-400 mask-star" />
+                                        <input type="radio" name="rating-1" className="mask bg-yellow-400 mask-star" />
+                                        <input type="radio" name="rating-1" className="mask bg-yellow-400 mask-star" />
+                                        <input type="radio" name="rating-1" className="mask bg-yellow-400 mask-star" defaultChecked />
+                                        <input type="radio" name="rating-1" className="mask mask-star" />
+                                    </div>
+                               </div>
                                 <p>Date : {new Date(item.date).toDateString()}</p>
                                
                             </div>

@@ -8,13 +8,13 @@ const Private = ({ children }) => {
 
 
 
-    if (loading || !user) {
+    if (loading && !user) {
         return <div className="flex justify-center items-center pt-72"><span className="loading loading-spinner loading-lg"></span></div>
     }
     else if (user) {
         return children
     }
-    return <Navigate state={location?.pathname} to={'/'} replace></Navigate>
+    return <Navigate state={location?.pathname} to={'/'} replace="true"></Navigate>
 
 };
 

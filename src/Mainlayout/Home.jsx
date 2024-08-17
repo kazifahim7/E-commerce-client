@@ -12,7 +12,10 @@ const Home = () => {
            <Navbar></Navbar>
            <Headers></Headers>
            <Showcase></Showcase>
+           <div id="product">
+            
            <Top></Top>
+           </div>
            <Footer></Footer>
 
 
